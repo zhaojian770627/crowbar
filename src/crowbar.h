@@ -124,7 +124,7 @@ typedef struct{
 typedef struct {
   Expression *left;
   Expression *right;
-}BinaruExpression;
+}BinaryExpression;
 
 
 typedef struct {
@@ -163,7 +163,7 @@ struct Expression_tag{
     char *string_value;
     char *identifier;
     AssignExpression assign_expression;
-    BinaruExpression binary_expression;
+    BinaryExpression binary_expression;
     Expression *minus_expression;
     FunctionCallExpression function_call_expression;
     MethodCallExpression method_call_expression;
