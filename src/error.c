@@ -23,40 +23,41 @@ typedef struct{
   }u;
 }MessageArgument;
 
-static void
-create_message_argument(MessageArgument *arg,va_list ap)
-{
-  int index=0;
-  MessageArgumentType type;
+static void create_message_argument(MessageArgument *arg, va_list ap) {
+	int index = 0;
+	MessageArgumentType type;
 
-  while((type=va_arg(ap,MessageArgumentType))!=MESSAGE_ARGUMENT_END){
-    arg[index].type=type;
-    arg[index].name=va_arg(ap,char*);
-    switch(type){
-    case INT_MESSAGE_ARGUMENT:
-      arg[index].u.int_val=va_arg(ap,int);
-      break;
-    case DOUBLE_MESSAGE_ARGUMENT:
-      arg[index].u.double_val=va_arg(ap,double);
-      break;
-    case STRING_MESSAGE_ARGUMENT:
-      arg[index].u.string_val=va_arg(ap,char*);
-      break;
-    case POINTER_MESSAGE_ARGUMENT:
-      arg[index].u.pointer_val=va_arg(ap,void*);
-      break;
-    case CHARACTER_MESSAGE_ARGUMENT:
-      arg[index].u.character_val=va_arg(ap,int);
-      break;
-    case MESSAGE_ARGUMENT_END:
-      assert(0);
-      break;
-    default:
-      assert(0);
-    }
-    index++;
-    assert(index<MESSAGE_ARGUMENT_MAX);
-  }
+	/*
+	 * type name value ÎªÒ»×é
+	 */
+	while ((type = va_arg(ap, MessageArgumentType)) != MESSAGE_ARGUMENT_END) {
+		arg[index].type = type;
+		arg[index].name = va_arg(ap, char*);
+		switch (type) {
+		case INT_MESSAGE_ARGUMENT:
+			arg[index].u.int_val = va_arg(ap, int);
+			break;
+		case DOUBLE_MESSAGE_ARGUMENT:
+			arg[index].u.double_val = va_arg(ap, double);
+			break;
+		case STRING_MESSAGE_ARGUMENT:
+			arg[index].u.string_val = va_arg(ap, char*);
+			break;
+		case POINTER_MESSAGE_ARGUMENT:
+			arg[index].u.pointer_val = va_arg(ap, void*);
+			break;
+		case CHARACTER_MESSAGE_ARGUMENT:
+			arg[index].u.character_val = va_arg(ap, int);
+			break;
+		case MESSAGE_ARGUMENT_END:
+			assert(0);
+			break;
+		default:
+			assert(0);
+		}
+		index++;
+		assert(index<MESSAGE_ARGUMENT_MAX);
+	}
 }
 
 static void 
@@ -159,23 +160,19 @@ self_check()
   }
 }
 
-void
-crb_compile_error(CompileError id,...)
-{
-  va_list ap;
-  VString message;
-  int line_number;
+void crb_compile_error(CompileError id, ...) {
+	va_list ap;
+	VString message;
+	int line_number;
 
-  self_check();
-  va_start(ap,id);
-  line_number=crb_get_current_interpreter()->
-    current_line_number;
-  crb_vstr_clear(&message);
-  format_message(&crb_compile_error_message_format[id],
-		 &message,ap);
-  fprintf(stderr,"%3d:%s\n",line_number,message.string);
-  va_end(ap);
-  exit(1);
+	self_check();
+	va_start(ap, id);
+	line_number = crb_get_current_interpreter()->current_line_number;
+	crb_vstr_clear(&message);
+	format_message(&crb_compile_error_message_format[id], &message, ap);
+	fprintf(stderr, "%3d:%s\n", line_number, message.string);
+	va_end(ap);
+	exit(1);
 }
 
 void
