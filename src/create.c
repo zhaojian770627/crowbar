@@ -170,29 +170,27 @@ convert_value_to_expression(CRB_Value *v)
   return expr;
 }
 
-Expression *
-crb_create_binary_expression(ExpressionType operator,
-			     Expression *left,Expression *right)
-{
-  if((left->type==INT_EXPRESSION
-      ||left->type==DOUBLE_EXPRESSION)
-     &&(right->type==DOUBLE_EXPRESSION
-	||right->type==DOUBLE_EXPRESSION
-	)){
-    CRB_Value v;
-    v=crb_eval_binary_expression(crb_get_current_interpreter(),
-				 NULL,operator,left,right);
-    /* Overwriting left hand expression. */
-    *left=convert_value_to_expression(&v);
+Expression*
+crb_create_binary_expression(ExpressionType operator, Expression *left,
+		Expression *right) {
+	// ³£Á¿ÕÛµþ
+	if ((left->type == INT_EXPRESSION || left->type == DOUBLE_EXPRESSION)
+			&& (right->type == DOUBLE_EXPRESSION
+					|| right->type == DOUBLE_EXPRESSION)) {
+		CRB_Value v;
+		v = crb_eval_binary_expression(crb_get_current_interpreter(),
+		NULL, operator, left, right);
+		/* Overwriting left hand expression. */
+		*left = convert_value_to_expression(&v);
 
-    return left;
-  }else{
-    Expression *exp;
-    exp=crb_alloc_expression(operator);
-    exp->u.binary_expression.left=left;
-    exp->u.binary_expression.right=right;
-    return exp;
-  }
+		return left;
+	} else {
+		Expression *exp;
+		exp = crb_alloc_expression(operator);
+		exp->u.binary_expression.left = left;
+		exp->u.binary_expression.right = right;
+		return exp;
+	}
 }
 
 Expression *
