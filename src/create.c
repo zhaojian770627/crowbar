@@ -193,23 +193,22 @@ crb_create_binary_expression(ExpressionType operator, Expression *left,
 	}
 }
 
-Expression *
-crb_create_minus_expression(Expression *operand)
-{
-  if(operand->type==INT_EXPRESSION
-     ||operand->type==DOUBLE_EXPRESSION){
-    CRB_Value v;
-    v=crb_eval_minus_expression(crb_get_current_interpreter(),
-				NULL,operand);
-    /* Notice!Overwriting operand expression */
-    *operand=convert_value_to_expression(&v);
-      return operand;
-  }else{
-    Expression *exp;
-    exp=crb_alloc_expression(MINUS_EXPRESSION);
-    exp->u.minus_expression=operand;
-    return exp;
-  }
+Expression*
+crb_create_minus_expression(Expression *operand) {
+	// ³£Á¿ÕÛµþ
+	if (operand->type == INT_EXPRESSION || operand->type == DOUBLE_EXPRESSION) {
+		CRB_Value v;
+		v = crb_eval_minus_expression(crb_get_current_interpreter(),
+		NULL, operand);
+		/* Notice!Overwriting operand expression */
+		*operand = convert_value_to_expression(&v);
+		return operand;
+	} else {
+		Expression *exp;
+		exp = crb_alloc_expression(MINUS_EXPRESSION);
+		exp->u.minus_expression = operand;
+		return exp;
+	}
 }
 
 Expression *
